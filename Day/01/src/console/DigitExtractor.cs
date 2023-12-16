@@ -18,8 +18,8 @@ class DigitExtractor
 
     private const string digitRegex = "([0-9]|zero|one|two|three|four|five|six|seven|eight|nine)";
 
-    private static Regex firstDigitRegex = new Regex(digitRegex);
-    private static Regex lastDigitRegex = new Regex(digitRegex, RegexOptions.RightToLeft);
+    private static readonly Regex firstDigitRegex = new Regex(digitRegex);
+    private static readonly Regex lastDigitRegex = new Regex(digitRegex, RegexOptions.RightToLeft);
 
     public static int GetFirstDigit(string line) =>
         ConvertDigitToInt(GetDigitString(line, true));
