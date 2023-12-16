@@ -22,16 +22,16 @@ class DigitExtractor
     private static Regex lastDigitRegex = new Regex(digitRegex, RegexOptions.RightToLeft);
 
     public static int GetFirstDigit(string line) =>
-        ConvertDigitToInt(GetFirstDigitString(line));
+        ConvertDigitToInt(GetDigitString(line, true));
 
     public static int GetLastDigit(string line) =>
-        ConvertDigitToInt(GetLastDigitString(line));
+        ConvertDigitToInt(GetDigitString(line, false));
 
-    private static string GetFirstDigitString(string line) =>
-        firstDigitRegex.Match(line).Groups[1].ToString();
-
-    private static string GetLastDigitString(string line) =>
-        lastDigitRegex.Match(line).Groups[1].ToString();
+    private static string GetDigitString(string line, bool first)
+    {
+        Regex regex = first ? firstDigitRegex : lastDigitRegex;
+        return regex.Match(line).Groups[1].ToString();
+    }
 
     private static int ConvertDigitToInt(string digit) =>
         digit.Length == 1 ? int.Parse(digit) : digits[digit];
