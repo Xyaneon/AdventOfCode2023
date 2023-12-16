@@ -29,18 +29,3 @@ foreach (var line in lines)
 Console.WriteLine($"Total value: {calibrationValue}");
 
 return 0;
-
-class Calculator
-{
-    public static int CalculateCalibrationValue(string line) =>
-        GetFirstDigit(line) * 10 + GetLastDigit(line);
-
-    private static int GetFirstDigit(string line) =>
-        ConvertDigitToInt(line.Where(x => char.IsDigit(x)).First());
-
-    private static int GetLastDigit(string line) =>
-        ConvertDigitToInt(line.Where(x => char.IsDigit(x)).Last());
-
-    private static int ConvertDigitToInt(char digit) =>
-        int.Parse(digit.ToString());
-}
