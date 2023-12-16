@@ -1,11 +1,15 @@
-﻿if (args.Length != 1)
+﻿if (args.Length != 4)
 {
-    Console.Error.WriteLine($"Incorrect number of arguments (expected 1, got {args.Length})");
-    Console.Error.WriteLine("Usage: dotnet Day2.exe input-file");
+    Console.Error.WriteLine($"Incorrect number of arguments (expected 4, got {args.Length})");
+    Console.Error.WriteLine("Usage: dotnet Day2.exe input-file red green blue");
     return 1;
 }
 
 string[] lines;
+
+int redCount = int.Parse(args[1]);
+int greenCount = int.Parse(args[2]);
+int blueCount = int.Parse(args[3]);
 
 try
 {
@@ -21,7 +25,10 @@ List<Game> games = GameParser.ParseGames(lines);
 
 foreach (Game game in games)
 {
-    Console.WriteLine($"Game {game.Id}:");
+    bool isPossible = GameCalculator.IsGamePossible(game, redCount, greenCount, blueCount);
+    Console.Write($"Game {game.Id}: ");
+    Console.WriteLine(isPossible ? "POSSIBLE" : "NOT POSSIBLE");
+
     foreach (Round round in game.Rounds)
     {
         Console.WriteLine($"{round.RedCubeCount} red, {round.GreenCubeCount} green, {round.BlueCubeCount} blue");
