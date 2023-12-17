@@ -27,9 +27,12 @@ List<Game> games = GameParser.ParseGames(lines);
 var idsOfPossibleGames = games
     .FindAll(game => game.IsPossible(redCount, greenCount, blueCount))
     .Select(game => game.Id);
+var totalPowerOfFewestPossibleCubes = games
+    .Select(game => game.FewestPossibleCubes().Power())
+    .Sum();
 
 OutputWriter.WriteAllGames(games, redCount, greenCount, blueCount);
-OutputWriter.WriteResults(idsOfPossibleGames);
+OutputWriter.WriteResults(idsOfPossibleGames, totalPowerOfFewestPossibleCubes);
 
 return 0;
 
@@ -49,10 +52,11 @@ static class OutputWriter
 
             CubeSet fewestPossibleCubes = game.FewestPossibleCubes();
             Console.WriteLine();
-            Console.WriteLine("Fewest possible cubes: {0:N0} red, {1:N0} green, {2:N0} blue",
+            Console.WriteLine("Fewest possible cubes: {0:N0} red, {1:N0} green, {2:N0} blue (power {3:N0})",
                               fewestPossibleCubes.RedCubeCount,
                               fewestPossibleCubes.GreenCubeCount,
-                              fewestPossibleCubes.BlueCubeCount);
+                              fewestPossibleCubes.BlueCubeCount,
+                              fewestPossibleCubes.Power());
 
             Console.WriteLine();
         }
@@ -74,11 +78,12 @@ static class OutputWriter
         }
     }
 
-    public static void WriteResults(IEnumerable<int> idsOfPossibleGames)
+    public static void WriteResults(IEnumerable<int> idsOfPossibleGames, int totalPowerOfFewestPossibleCubes)
     {
         Console.WriteLine("## Results");
         Console.WriteLine();
         Console.WriteLine($"- IDs of all possible games: {string.Join('+', idsOfPossibleGames)}");
         Console.WriteLine($"- Sum of IDs of possible games: **{idsOfPossibleGames.Sum()}**");
+        Console.WriteLine($"- Total power of fewest possible cubes for all games: **{totalPowerOfFewestPossibleCubes}**");
     }
 }
