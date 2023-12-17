@@ -1,6 +1,8 @@
-static class ScratchcardParser
+namespace Extensions;
+
+static class StringExtensions
 {
-    public static Scratchcard Parse(string str)
+    public static Scratchcard ParseAsScratchcard(this string str)
     {
         string[] labeledParts = str.Split(':', StringSplitOptions.TrimEntries);
         string[] numberParts = labeledParts[1].Split('|', StringSplitOptions.TrimEntries);

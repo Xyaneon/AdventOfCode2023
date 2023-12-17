@@ -1,4 +1,6 @@
-﻿if (args.Length != 1)
+﻿using Extensions;
+
+if (args.Length != 1)
 {
     Console.Error.WriteLine($"Incorrect number of arguments (expected 1, got {args.Length})");
     Console.Error.WriteLine("Usage: dotnet Day4.exe input-file");
@@ -17,7 +19,7 @@ catch (Exception ex)
     return 2;
 }
 
-IEnumerable<Scratchcard> scratchcards = lines.Select(line => ScratchcardParser.Parse(line));
+IEnumerable<Scratchcard> scratchcards = lines.Select(line => line.ParseAsScratchcard());
 
 OutputWriter.PrintScratchcards(scratchcards);
 
