@@ -1,4 +1,6 @@
-﻿using Extensions;
+﻿using System.Reflection.Metadata.Ecma335;
+
+using Extensions;
 
 if (args.Length != 1)
 {
@@ -23,9 +25,14 @@ IEnumerable<Scratchcard> scratchcards = lines.Select(line => line.ParseAsScratch
 
 OutputWriter.PrintScratchcards(scratchcards);
 
-// TODO
+var game = new PartTwoGame(scratchcards);
+game.Play();
+
+Console.WriteLine();
+OutputWriter.PrintPartTwoGame(game);
 
 return 0;
+
 
 static class OutputWriter
 {
@@ -42,11 +49,28 @@ static class OutputWriter
 
     public static void PrintScratchcard(Scratchcard scratchcard)
     {
-        Console.WriteLine("Card {0}: {1} | {2}",
-                          scratchcard.CardNumber,
-                          string.Join(' ', scratchcard.WinningNumbers),
-                          string.Join(' ', scratchcard.NumbersYouHave));
+        Console.WriteLine(Format(scratchcard));
         Console.WriteLine($"\t Matching numbers: {string.Join(' ', scratchcard.DetermineMatchingNumbers())}");
         Console.WriteLine($"\t Points          : {string.Join(' ', scratchcard.CalculatePoints())}");
     }
+
+    public static void PrintPartTwoGame(PartTwoGame game)
+    {
+        foreach (CopyableScratchcard scratchcard in game.ScratchcardCopies)
+        {
+            Console.WriteLine(Format(scratchcard));
+        }
+
+        Console.WriteLine();
+        Console.WriteLine($"Total number of scratchcards: {game.CountTotalNumberOfScratchcards()}");
+    }
+
+    private static string Format(CopyableScratchcard scratchcard) =>
+        string.Format("⨯{0} {1}", scratchcard.Copies, Format(scratchcard.Scratchcard));
+
+    private static string Format(Scratchcard scratchcard) =>
+        string.Format("Card {0}: {1} | {2}",
+                      scratchcard.CardNumber,
+                      string.Join(' ', scratchcard.WinningNumbers),
+                      string.Join(' ', scratchcard.NumbersYouHave));
 }
