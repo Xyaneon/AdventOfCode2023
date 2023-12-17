@@ -3,8 +3,17 @@ namespace Extensions;
 static class SchematicExtensions
 {
     public static IEnumerable<int> FindPartNumbers(this Schematic schematic) =>
-        Enumerable.Range(0, schematic.Lines.Count)
+        schematic.RetrieveRowNumbers()
             .SelectMany(rowNumber => schematic.FindPartNumbersInLine(rowNumber));
+    
+    public static SchematicLine? RetrieveLineAbove(this Schematic schematic, int rowNumber) =>
+        rowNumber == 0 ? null : schematic.Lines.ElementAt(rowNumber - 1);
+
+    public static SchematicLine? RetrieveLineBelow(this Schematic schematic, int rowNumber) =>
+        rowNumber == schematic.Lines.Count - 1 ? null : schematic.Lines.ElementAt(rowNumber + 1);
+
+    public static IEnumerable<int> RetrieveRowNumbers(this Schematic schematic) =>
+        Enumerable.Range(0, schematic.Lines.Count);
 
     private static IEnumerable<int> FindPartNumbersInLine(this Schematic schematic, int rowNumber) =>
         schematic.Lines.ElementAt(rowNumber).Numbers
@@ -27,10 +36,4 @@ static class SchematicExtensions
     private static bool IsNumberAdjacentToSymbolOnSameLine(SchematicNumber number, SchematicLine line) =>
         line.RetrieveSymbolPositions()
             .Any(position => position == number.FirstDigitPosition - 1 || position == number.LastDigitPosition + 1);
-
-    private static SchematicLine? RetrieveLineAbove(this Schematic schematic, int rowNumber) =>
-        rowNumber == 0 ? null : schematic.Lines.ElementAt(rowNumber - 1);
-
-    private static SchematicLine? RetrieveLineBelow(this Schematic schematic, int rowNumber) =>
-        rowNumber == schematic.Lines.Count - 1 ? null : schematic.Lines.ElementAt(rowNumber + 1);
 }
