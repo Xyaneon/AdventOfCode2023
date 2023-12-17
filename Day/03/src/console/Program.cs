@@ -25,6 +25,9 @@ OutputWriter.PrintParsedSchematic(schematic);
 IEnumerable<int> partNumbers = schematic.FindPartNumbers();
 OutputWriter.PrintPartNumbers(partNumbers);
 
+IEnumerable<Gear> gears = schematic.FindGears();
+OutputWriter.PrintGears(gears);
+
 return 0;
 
 
@@ -45,5 +48,12 @@ static class OutputWriter
         int partNumberSum = partNumbers.Sum();
         Console.WriteLine("Part numbers: " + string.Join(", ", partNumbers));
         Console.WriteLine($"Part number sum: {partNumberSum}");
+    }
+
+    public static void PrintGears(IEnumerable<Gear> gears)
+    {
+        int gearRatioSum = gears.Select(gear => gear.Ratio).Sum();
+        Console.WriteLine("Gear ratios:\n\t" + string.Join("\n\t", gears));
+        Console.WriteLine($"Gear Ratio sum: {gearRatioSum}");
     }
 }
