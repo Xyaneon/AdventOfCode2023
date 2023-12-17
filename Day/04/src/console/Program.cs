@@ -33,10 +33,20 @@ static class OutputWriter
     {
         foreach (Scratchcard scratchcard in scratchcards)
         {
-            Console.WriteLine("Card {0}: {1} | {2}",
-                              scratchcard.CardNumber,
-                              string.Join(' ', scratchcard.WinningNumbers),
-                              string.Join(' ', scratchcard.NumbersYouHave));
+            PrintScratchcard(scratchcard);
         }
+
+        Console.WriteLine();
+        Console.WriteLine($"Total point value: {scratchcards.Select(card => card.CalculatePoints()).Sum()}");
+    }
+
+    public static void PrintScratchcard(Scratchcard scratchcard)
+    {
+        Console.WriteLine("Card {0}: {1} | {2}",
+                          scratchcard.CardNumber,
+                          string.Join(' ', scratchcard.WinningNumbers),
+                          string.Join(' ', scratchcard.NumbersYouHave));
+        Console.WriteLine($"\t Matching numbers: {string.Join(' ', scratchcard.DetermineMatchingNumbers())}");
+        Console.WriteLine($"\t Points          : {string.Join(' ', scratchcard.CalculatePoints())}");
     }
 }
