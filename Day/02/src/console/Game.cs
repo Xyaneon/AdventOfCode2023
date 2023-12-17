@@ -1,1 +1,1 @@
-record Game(int Id, List<Round> Rounds);
+record Game(int Id, List<CubeSet> Rounds);

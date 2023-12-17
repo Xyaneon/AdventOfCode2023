@@ -6,17 +6,17 @@ class GameParser
     private static Game ParseGame(string line)
     {
         (int id, string remainder) = ExtractGameId(line);
-        List<Round> rounds = ParseRounds(remainder);
+        List<CubeSet> rounds = ParseRounds(remainder);
 
         return new Game(id, rounds);
     }
 
-    private static List<Round> ParseRounds(string lineRemainder) =>
+    private static List<CubeSet> ParseRounds(string lineRemainder) =>
         lineRemainder.Split(';', StringSplitOptions.TrimEntries)
             .Select(x => ParseRound(x))
             .ToList();
 
-    private static Round ParseRound(string str)
+    private static CubeSet ParseRound(string str)
     {
         int redCubeCount = 0;
         int greenCubeCount = 0;
@@ -40,7 +40,7 @@ class GameParser
             }
         }
 
-        return new Round(redCubeCount, greenCubeCount, blueCubeCount);
+        return new CubeSet(redCubeCount, greenCubeCount, blueCubeCount);
     }
 
     private static (int id, string remainder) ExtractGameId(string line)

@@ -55,7 +55,7 @@ static class OutputWriter
     {
         Console.WriteLine("| Red  | Green | Blue |");
         Console.WriteLine("| ---- | ----- | ---- |");
-        foreach (Round round in game.Rounds)
+        foreach (CubeSet round in game.Rounds)
         {
             Console.WriteLine("| {0,2:N0} {1} | {2,2:N0} {3}  | {4,2:N0} {5} |",
                           round.RedCubeCount,
@@ -71,7 +71,7 @@ static class OutputWriter
     {
         Console.WriteLine("## Results");
         Console.WriteLine();
-        Console.WriteLine($"IDs of all possible games: {string.Join('+', idsOfPossibleGames)}");
-        Console.WriteLine($"Sum of IDs of possible games: **{idsOfPossibleGames.Sum()}**");
+        Console.WriteLine($"- IDs of all possible games: {string.Join('+', idsOfPossibleGames)}");
+        Console.WriteLine($"- Sum of IDs of possible games: **{idsOfPossibleGames.Sum()}**");
     }
 }
