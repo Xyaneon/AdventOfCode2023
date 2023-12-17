@@ -24,19 +24,54 @@ catch (Exception ex)
 }
 
 List<Game> games = GameParser.ParseGames(lines);
+var idsOfPossibleGames = games
+    .FindAll(game => game.IsPossible(redCount, greenCount, blueCount))
+    .Select(game => game.Id);
 
-foreach (Game game in games)
-{
-    bool isPossible = game.IsPossible(redCount, greenCount, blueCount);
-    Console.Write($"Game {game.Id}: ");
-    Console.WriteLine(isPossible ? "POSSIBLE" : "NOT POSSIBLE");
-
-    foreach (Round round in game.Rounds)
-    {
-        Console.WriteLine($"{round.RedCubeCount} red, {round.GreenCubeCount} green, {round.BlueCubeCount} blue");
-    }
-}
-
-// TODO
+OutputWriter.WriteAllGames(games, redCount, greenCount, blueCount);
+OutputWriter.WriteResults(idsOfPossibleGames);
 
 return 0;
+
+static class OutputWriter
+{
+    public static void WriteAllGames(List<Game> games, int red, int green, int blue)
+    {
+        foreach (Game game in games)
+        {
+            Console.WriteLine("## Game {0:N0}: {1} POSSIBLE", game.Id, game.IsPossible(red, green, blue) ? "" : "NOT");
+
+            Console.WriteLine();
+            Console.WriteLine("This game had **{0:N0} rounds**.", game.Rounds.Count);
+            Console.WriteLine();
+
+            WriteAllRounds(game, red, green, blue);
+
+            Console.WriteLine();
+        }
+    }
+
+    public static void WriteAllRounds(Game game, int red, int green, int blue)
+    {
+        Console.WriteLine("| Red  | Green | Blue |");
+        Console.WriteLine("| ---- | ----- | ---- |");
+        foreach (Round round in game.Rounds)
+        {
+            Console.WriteLine("| {0,2:N0} {1} | {2,2:N0} {3}  | {4,2:N0} {5} |",
+                          round.RedCubeCount,
+                          red < round.RedCubeCount ? "⨯" : "✔",
+                          round.GreenCubeCount,
+                          green < round.GreenCubeCount ? "⨯" : "✔",
+                          round.BlueCubeCount,
+                          blue < round.BlueCubeCount ? "⨯" : "✔");
+        }
+    }
+
+    public static void WriteResults(IEnumerable<int> idsOfPossibleGames)
+    {
+        Console.WriteLine("## Results");
+        Console.WriteLine();
+        Console.WriteLine($"IDs of all possible games: {string.Join('+', idsOfPossibleGames)}");
+        Console.WriteLine($"Sum of IDs of possible games: **{idsOfPossibleGames.Sum()}**");
+    }
+}
