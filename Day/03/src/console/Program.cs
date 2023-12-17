@@ -1,4 +1,6 @@
-﻿if (args.Length != 1)
+﻿using Extensions;
+
+if (args.Length != 1)
 {
     Console.Error.WriteLine($"Incorrect number of arguments (expected 1, got {args.Length})");
     Console.Error.WriteLine("Usage: dotnet Day3.exe input-file");
@@ -20,6 +22,9 @@ catch (Exception ex)
 Schematic schematic = SchematicParser.Parse(lines);
 OutputWriter.PrintParsedSchematic(schematic);
 
+IEnumerable<int> partNumbers = schematic.FindPartNumbers();
+OutputWriter.PrintPartNumbers(partNumbers);
+
 return 0;
 
 
@@ -33,5 +38,12 @@ static class OutputWriter
             Console.WriteLine("\tNumbers: " + string.Join(", ", line.Numbers));
             Console.WriteLine("\tSymbols: " + string.Join(", ", line.Symbols));
         }
+    }
+
+    public static void PrintPartNumbers(IEnumerable<int> partNumbers)
+    {
+        int partNumberSum = partNumbers.Sum();
+        Console.WriteLine("Part numbers: " + string.Join(", ", partNumbers));
+        Console.WriteLine($"Part number sum: {partNumberSum}");
     }
 }
