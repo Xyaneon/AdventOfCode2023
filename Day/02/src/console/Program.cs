@@ -1,4 +1,6 @@
-﻿if (args.Length != 4)
+﻿using Extensions;
+
+if (args.Length != 4)
 {
     Console.Error.WriteLine($"Incorrect number of arguments (expected 4, got {args.Length})");
     Console.Error.WriteLine("Usage: dotnet Day2.exe input-file red green blue");
@@ -25,7 +27,7 @@ List<Game> games = GameParser.ParseGames(lines);
 
 foreach (Game game in games)
 {
-    bool isPossible = GameCalculator.IsGamePossible(game, redCount, greenCount, blueCount);
+    bool isPossible = game.IsPossible(redCount, greenCount, blueCount);
     Console.Write($"Game {game.Id}: ");
     Console.WriteLine(isPossible ? "POSSIBLE" : "NOT POSSIBLE");
 
