@@ -47,6 +47,13 @@ static class OutputWriter
 
             WriteAllRounds(game, red, green, blue);
 
+            CubeSet fewestPossibleCubes = game.FewestPossibleCubes();
+            Console.WriteLine();
+            Console.WriteLine("Fewest possible cubes: {0:N0} red, {1:N0} green, {2:N0} blue",
+                              fewestPossibleCubes.RedCubeCount,
+                              fewestPossibleCubes.GreenCubeCount,
+                              fewestPossibleCubes.BlueCubeCount);
+
             Console.WriteLine();
         }
     }
