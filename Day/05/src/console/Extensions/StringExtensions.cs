@@ -13,17 +13,37 @@ static class StringExtensions
             throw new InvalidOperationException($"The line to parse as a MapRange must have three parts (found {numbers.Length}).");
         }
 
+        long destinationRangeStart;
+        long sourceRangeStart;
+        long rangeLength;
+
         try
         {
-            int destinationRangeStart = int.Parse(numbers[0]);
-            int sourceRangeStart = int.Parse(numbers[1]);
-            int rangeLength = int.Parse(numbers[2]);
-
-            return new MapRange(destinationRangeStart, sourceRangeStart, rangeLength);
+            destinationRangeStart = long.Parse(numbers[0]);
         }
         catch (Exception ex)
         {
-            throw new InvalidOperationException($"Could not parse a number in the MapRange.", ex);
+            throw new InvalidOperationException($"Could not parse the destination range number \"{numbers[0]}\" in the MapRange.", ex);
         }
+
+        try
+        {
+            sourceRangeStart = long.Parse(numbers[1]);
+        }
+        catch (Exception ex)
+        {
+            throw new InvalidOperationException($"Could not parse the source range number \"{numbers[1]}\" in the MapRange.", ex);
+        }
+
+        try
+        {
+            rangeLength = long.Parse(numbers[2]);
+        }
+        catch (Exception ex)
+        {
+            throw new InvalidOperationException($"Could not parse the range length \"{numbers[2]}\" in the MapRange.", ex);
+        }
+
+        return new MapRange(destinationRangeStart, sourceRangeStart, rangeLength);
     }
 }

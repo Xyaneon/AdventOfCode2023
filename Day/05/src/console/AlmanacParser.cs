@@ -8,7 +8,7 @@ static class AlmanacParser
 {
     public static Almanac Parse(IEnumerable<string> lines)
     {
-        IEnumerable<int> seedList = ParseSeedList(lines.First());
+        IEnumerable<long> seedList = ParseSeedList(lines.First());
 
         var mapToParse = MapKind.SeedToSoil;
 
@@ -48,7 +48,7 @@ static class AlmanacParser
                             maps.ToImmutableDictionary(key => key.Key, key => new Map(maps[key.Key].ToImmutableList())));
     }
 
-    private static IEnumerable<int> ParseSeedList(string line)
+    private static IEnumerable<long> ParseSeedList(string line)
     {
         string[] tokens = line.Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
 
@@ -61,7 +61,7 @@ static class AlmanacParser
         {
             return tokens.AsEnumerable()
                          .Skip(1)
-                         .Select(token => int.Parse(token));
+                         .Select(token => long.Parse(token));
         }
         catch (Exception ex)
         {

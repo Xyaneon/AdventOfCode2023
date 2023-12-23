@@ -26,7 +26,27 @@ Almanac almanac = AlmanacParser.Parse(lines);
 
 OutputWriter.PrintAlmanac(almanac);
 
-// TODO
+var lowestLocationNumber = long.MaxValue;
+foreach (long seedNumber in almanac.SeedList)
+{
+    long soilNumber = almanac.Maps[MapKind.SeedToSoil].GetCorrespondingDestinationNumber(seedNumber);
+    long fertilizerNumber = almanac.Maps[MapKind.SoilToFertilizer].GetCorrespondingDestinationNumber(soilNumber);
+    long waterNumber = almanac.Maps[MapKind.FertilizerToWater].GetCorrespondingDestinationNumber(fertilizerNumber);
+    long lightNumber = almanac.Maps[MapKind.WaterToLight].GetCorrespondingDestinationNumber(waterNumber);
+    long temperatureNumber = almanac.Maps[MapKind.LightToTemperature].GetCorrespondingDestinationNumber(lightNumber);
+    long humidityNumber = almanac.Maps[MapKind.TemperatureToHumidity].GetCorrespondingDestinationNumber(temperatureNumber);
+    long locationNumber = almanac.Maps[MapKind.HumidityToLocation].GetCorrespondingDestinationNumber(humidityNumber);
+
+    if (locationNumber < lowestLocationNumber)
+    {
+        lowestLocationNumber = locationNumber;
+    }
+
+    Console.WriteLine($"Seed {seedNumber}, soil {soilNumber}, fertilizer {fertilizerNumber}, water {waterNumber}, light {lightNumber}, temperature {temperatureNumber}, humidity {humidityNumber}, location {locationNumber}");
+}
+
+Console.WriteLine("---");
+Console.WriteLine($"Lowest location number: {lowestLocationNumber}");
 
 return 0;
 

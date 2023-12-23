@@ -1,3 +1,3 @@
 namespace Domain;
 
-record MapRange(int DestinationRangeStart, int SourceRangeStart, int RangeLength);
+record MapRange(long DestinationRangeStart, long SourceRangeStart, long RangeLength);
