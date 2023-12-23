@@ -1,6 +1,4 @@
-﻿using System.Reflection.Metadata.Ecma335;
-
-using Extensions;
+﻿using Extensions;
 
 if (args.Length != 1)
 {
