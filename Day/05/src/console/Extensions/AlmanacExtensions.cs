@@ -35,6 +35,7 @@ static class AlmanacExtensions
     private static IEnumerable<string> CreateLinesForMap(Almanac almanac, MapKind mapKind) =>
         EnumerableFromSingleElement(mapKindToHeaderDictionary[mapKind])
             .Concat(almanac.Maps[mapKind]
+                           .Ranges
                            .Select(mapRange => CreateMapRangeLine(mapRange)))
             .ToList();
 

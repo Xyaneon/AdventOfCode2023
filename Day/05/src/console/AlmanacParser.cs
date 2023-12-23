@@ -45,7 +45,7 @@ static class AlmanacParser
         }
 
         return new Almanac(ImmutableList.ToImmutableList(seedList),
-                            maps.ToImmutableDictionary(key => key.Key, key => maps[key.Key].ToImmutableList()));
+                            maps.ToImmutableDictionary(key => key.Key, key => new Map(maps[key.Key].ToImmutableList())));
     }
 
     private static IEnumerable<int> ParseSeedList(string line)
