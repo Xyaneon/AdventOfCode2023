@@ -1,4 +1,6 @@
-﻿using Domain;
+﻿using System.Diagnostics;
+
+using Domain;
 
 using Extensions;
 
@@ -26,27 +28,18 @@ Almanac almanac = AlmanacParser.Parse(lines);
 
 OutputWriter.PrintAlmanac(almanac);
 
-var lowestLocationNumber = long.MaxValue;
-foreach (long seedNumber in almanac.SeedList)
-{
-    long soilNumber = almanac.Maps[MapKind.SeedToSoil].GetCorrespondingDestinationNumber(seedNumber);
-    long fertilizerNumber = almanac.Maps[MapKind.SoilToFertilizer].GetCorrespondingDestinationNumber(soilNumber);
-    long waterNumber = almanac.Maps[MapKind.FertilizerToWater].GetCorrespondingDestinationNumber(fertilizerNumber);
-    long lightNumber = almanac.Maps[MapKind.WaterToLight].GetCorrespondingDestinationNumber(waterNumber);
-    long temperatureNumber = almanac.Maps[MapKind.LightToTemperature].GetCorrespondingDestinationNumber(lightNumber);
-    long humidityNumber = almanac.Maps[MapKind.TemperatureToHumidity].GetCorrespondingDestinationNumber(temperatureNumber);
-    long locationNumber = almanac.Maps[MapKind.HumidityToLocation].GetCorrespondingDestinationNumber(humidityNumber);
-
-    if (locationNumber < lowestLocationNumber)
-    {
-        lowestLocationNumber = locationNumber;
-    }
-
-    Console.WriteLine($"Seed {seedNumber}, soil {soilNumber}, fertilizer {fertilizerNumber}, water {waterNumber}, light {lightNumber}, temperature {temperatureNumber}, humidity {humidityNumber}, location {locationNumber}");
-}
+long totalSeedCount = almanac.GetSeedRanges()
+                             .Select(range => range.Count)
+                             .Sum();
 
 Console.WriteLine("---");
-Console.WriteLine($"Lowest location number: {lowestLocationNumber}");
+Console.WriteLine("Processing {0:N0} seeds...", totalSeedCount);
+var stopwatch = Stopwatch.StartNew();
+long lowestLocationNumber = almanac.GetLowestLocationNumberForAllSeedRanges();
+stopwatch.Stop();
+
+Console.WriteLine("---");
+Console.WriteLine($"Lowest location number: {lowestLocationNumber} (found in {stopwatch.ElapsedMilliseconds} ms)");
 
 return 0;
 
