@@ -21,8 +21,8 @@ catch (Exception ex)
 
 IEnumerable<RaceRecord> raceRecords = RecordsParser.ParseRecords(lines);
 
-int product = raceRecords.Select(raceRecord => Calculator.ComputeNumberOfWaysToBeatRecord(raceRecord))
-                         .Aggregate(1, (product, nextNumber) => product * nextNumber);
+long product = raceRecords.Select(raceRecord => Calculator.ComputeNumberOfWaysToBeatRecord(raceRecord))
+                         .Aggregate(1L, (product, nextNumber) => product * nextNumber);
 
 foreach (var raceRecord in raceRecords)
 {
@@ -31,5 +31,9 @@ foreach (var raceRecord in raceRecords)
 }
 
 Console.WriteLine($"Product of all ways to beat records: {product}");
+
+RaceRecord singleRecord = RecordsParser.ParseAsSingleRecord(lines);
+
+Console.WriteLine($"Number of ways to beat as single record: {Calculator.ComputeNumberOfWaysToBeatRecord(singleRecord)}");
 
 return 0;

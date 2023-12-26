@@ -9,8 +9,8 @@ static class RecordsParser
             throw new ArgumentException($"Exactly two lines must be supplied ({lines.Count} provided).", nameof(lines));
         }
 
-        IList<int> times = ParseNumbersLine(lines[0]);
-        IList<int> distances = ParseNumbersLine(lines[1]);
+        IList<long> times = ParseNumbersLine(lines[0]);
+        IList<long> distances = ParseNumbersLine(lines[1]);
 
         if (times.Count != distances.Count)
         {
@@ -23,9 +23,25 @@ static class RecordsParser
         }
     }
 
-    private static IList<int> ParseNumbersLine(string line) =>
+    public static RaceRecord ParseAsSingleRecord(IList<string> lines)
+    {
+        if (lines.Count != 2)
+        {
+            throw new ArgumentException($"Exactly two lines must be supplied ({lines.Count} provided).", nameof(lines));
+        }
+
+        long time = ParseNumberLine(lines[0]);
+        long distance = ParseNumberLine(lines[1]);
+
+        return new RaceRecord(time, distance);
+    }
+
+    private static long ParseNumberLine(string line) =>
+        long.Parse(line.Split(' ', 2)[1].Replace(" ", ""));
+
+    private static IList<long> ParseNumbersLine(string line) =>
         line.Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
             .Skip(1)
-            .Select(x => int.Parse(x))
+            .Select(x => long.Parse(x))
             .ToList();
 }
