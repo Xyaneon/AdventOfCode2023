@@ -26,7 +26,7 @@ List<PuzzleInputLine> puzzleInputLines = lines.Select(line => line.ParseAsPuzzle
 
 foreach (PuzzleInputLine line in puzzleInputLines)
 {
-    Console.WriteLine($"{line.Hand} {line.Bid}");
+    Console.WriteLine($"{line.Hand} {line.Bid} {line.DetermineHandType()}");
 }
 
 // TODO: Fill in the rest.
