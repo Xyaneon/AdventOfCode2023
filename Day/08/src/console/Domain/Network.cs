@@ -15,6 +15,9 @@ public class Network
 
     public string GetRightNode(string sourceNode) => Edges[sourceNode].Item2;
 
+    public IEnumerable<string> GetPartTwoStartNodes() =>
+        Edges.Keys.Where(sourceNode => sourceNode.EndsWith('A'));
+
     public override string ToString()
     {
         IEnumerable<string> edgeStrings = Edges.Keys.Select(sourceNode => GetEdgeAsString(sourceNode))

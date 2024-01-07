@@ -1,5 +1,7 @@
 ﻿using System.Diagnostics;
 
+using Calculations;
+
 using Domain;
 
 if (args.Length != 1)
@@ -28,24 +30,11 @@ Console.WriteLine("---");
 
 var stopwatch = Stopwatch.StartNew();
 
-string currentNode = NodeConstants.StartNode;
-int steps = 0;
-int directionIndex = 0;
+List<string> startNodes = puzzleInput.Network.GetPartTwoStartNodes().ToList();
 
-while (currentNode != NodeConstants.EndNode)
-{
-    Direction nextDirection = puzzleInput.Directions[directionIndex];
+Console.WriteLine($"{startNodes.Count} start nodes identified.");
 
-    currentNode = nextDirection == Direction.Left
-        ? puzzleInput.Network.GetLeftNode(currentNode)
-        : puzzleInput.Network.GetRightNode(currentNode);
-    
-    steps++;
-    directionIndex++;
-
-    if (directionIndex >= puzzleInput.Directions.Count)
-        directionIndex = 0;
-}
+int steps = GhostNavigator.GetStepsToNavigate(puzzleInput);
 
 stopwatch.Stop();
 

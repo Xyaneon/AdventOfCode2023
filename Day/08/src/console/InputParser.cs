@@ -5,7 +5,7 @@ using Domain;
 
 static class InputParser
 {
-    private const string NetworkLineRegexPattern = @"([a-zA-Z]+)\s*=\s*\(([a-zA-Z]+),\s*([a-zA-Z]+)\)";
+    private const string NetworkLineRegexPattern = @"([0-9a-zA-Z]+)\s*=\s*\(([0-9a-zA-Z]+),\s*([0-9a-zA-Z]+)\)";
     private static readonly Regex NetworkLineRegex = new(NetworkLineRegexPattern);
 
     public static PuzzleInput ParseAsPuzzleInput(IList<string> lines)
