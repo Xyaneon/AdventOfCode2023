@@ -4,18 +4,20 @@ namespace Calculations;
 
 public static class GhostNavigator
 {
-    public static int GetStepsToNavigate(PuzzleInput puzzleInput)
+    public static long GetStepsToNavigate(PuzzleInput puzzleInput)
     {
         var directions = puzzleInput.Directions;
         var network = puzzleInput.Network;
 
-        List<string> currentNodes = network.GetPartTwoStartNodes().ToList();
-        int pathsCount = currentNodes.Count;
-        int steps = 0;
+        List<SinglePathNavigator> navigators = network.GetPartTwoStartNodes()
+                                                      .Select(node => new SinglePathNavigator(node))
+                                                      .ToList();
+        int pathsCount = navigators.Count;
+        long steps = 0;
         int directionIndex = 0;
         Direction nextDirection;
 
-        while (!AllAreEndNodes(currentNodes))
+        while (!navigators.All(navigator => navigator.OnAnEndingNode))
         {
             nextDirection = directions[directionIndex];
 
@@ -23,11 +25,9 @@ public static class GhostNavigator
 
             for (int i = 0; i < pathsCount; i++)
             {
-                // Console.Write($"  Path {i + 1}: {currentNodes[i]} -> ");
-                currentNodes[i] = nextDirection == Direction.Left
-                    ? network.GetLeftNode(currentNodes[i])
-                    : network.GetRightNode(currentNodes[i]);
-                // Console.WriteLine($"{currentNodes[i]}" + (currentNodes[i].EndsWith('Z') ? " (FINISHED)" : ""));
+                // Console.Write($"  Path {i + 1}: {navigators[i].CurrentNode} -> ");
+                navigators[i].Navigate(network, nextDirection);
+                // Console.WriteLine($"{navigators[i].CurrentNode}" + (navigators[i].OnAnEndingNode ? " (END NODE)" : ""));
             }
 
             steps++;
@@ -39,7 +39,4 @@ public static class GhostNavigator
 
         return steps;
     }
-
-    private static bool AllAreEndNodes(IEnumerable<string> nodes) =>
-        nodes.All(node => node.EndsWith('Z'));
 }

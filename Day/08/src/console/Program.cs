@@ -34,7 +34,7 @@ List<string> startNodes = puzzleInput.Network.GetPartTwoStartNodes().ToList();
 
 Console.WriteLine($"{startNodes.Count} start nodes identified.");
 
-int steps = GhostNavigator.GetStepsToNavigate(puzzleInput);
+long steps = GhostNavigator.GetStepsToNavigate(puzzleInput);
 
 stopwatch.Stop();
 
