@@ -12,6 +12,6 @@ static class StringExtensions {
             throw new ArgumentException($"Expected 2 parts, but got {inputParts.Length}.", nameof(str));
         }
 
-        return new PuzzleInputLine(inputParts[0], int.Parse(inputParts[1]));
+        return new PuzzleInputLine(new Hand(inputParts[0]), int.Parse(inputParts[1]));
     }
 }

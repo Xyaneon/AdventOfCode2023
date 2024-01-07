@@ -4,9 +4,9 @@ namespace Calculations;
 
 static class HandTypeDeterminer
 {
-    public static HandType DetermineHandType(string hand)
+    public static HandType DetermineHandType(Hand hand)
     {
-        var cardCounts = GetCardCounts(hand);
+        var cardCounts = GetCardCounts(hand.Labels);
 
         if (IsFiveOfAKind(cardCounts))
         {
@@ -52,7 +52,7 @@ static class HandTypeDeterminer
     }
 
     private static Dictionary<char, int> InitializeEmptyCardCounts() =>
-        new Dictionary<char, int>()
+        new()
         {
             { '2', 0 },
             { '3', 0 },

@@ -1,6 +1,6 @@
 namespace Domain;
 
-enum HandType
+public enum HandType
 {
     HighCard,
     OnePair,
