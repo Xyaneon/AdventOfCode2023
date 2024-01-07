@@ -1,4 +1,4 @@
-# Advent of Code: Day 6
+# Advent of Code: Day 7
 
 This directory holds the source code for the console app used to solve the
 Day 7 puzzle of Advent of Code 2023.
