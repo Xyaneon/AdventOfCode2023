@@ -15,7 +15,7 @@ public static class LabelExtensions
         Label.Eight => '8',
         Label.Nine => '9',
         Label.Ten => 'T',
-        Label.Jack => 'J',
+        Label.Joker => 'J',
         Label.Queen => 'Q',
         Label.King => 'K',
         Label.Ace => 'A',

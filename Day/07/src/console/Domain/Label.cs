@@ -2,6 +2,7 @@ namespace Domain;
 
 public enum Label
 {
+    Joker,
     Two,
     Three,
     Four,
@@ -11,7 +12,6 @@ public enum Label
     Eight,
     Nine,
     Ten,
-    Jack,
     Queen,
     King,
     Ace

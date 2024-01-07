@@ -43,47 +43,41 @@ static class HandTypeDeterminer
 
     private static Dictionary<Label, int> GetCardCounts(IEnumerable<Label> labels)
     {
-        var cardCounts = InitializeEmptyCardCounts();
+        var cardCounts = new Dictionary<Label, int>();
         foreach (var label in labels)
         {
-            cardCounts[label] = cardCounts[label] + 1;
+            cardCounts[label] = cardCounts.GetValueOrDefault(label, 0) + 1;
         }
         return cardCounts;
     }
 
-    private static Dictionary<Label, int> InitializeEmptyCardCounts() =>
-        new()
-        {
-            { Label.Two, 0 },
-            { Label.Three, 0 },
-            { Label.Four, 0 },
-            { Label.Five, 0 },
-            { Label.Six, 0 },
-            { Label.Seven, 0 },
-            { Label.Eight, 0 },
-            { Label.Nine, 0 },
-            { Label.Ten, 0 },
-            { Label.Jack, 0 },
-            { Label.Queen, 0 },
-            { Label.King, 0 },
-            { Label.Ace, 0 },
-        };
+    private static bool IsFiveOfAKind(Dictionary<Label, int> cardCounts) => HasCardsOfSameKind(cardCounts, 5);
 
-    private static bool IsFiveOfAKind(Dictionary<Label, int> cardCounts) =>
-        cardCounts.Values.Any(value => value == 5);
+    private static bool IsFourOfAKind(Dictionary<Label, int> cardCounts) => HasCardsOfSameKind(cardCounts, 4);
 
-    private static bool IsFourOfAKind(Dictionary<Label, int> cardCounts) =>
-        cardCounts.Values.Any(value => value == 4);
-    
     private static bool IsFullHouse(Dictionary<Label, int> cardCounts) =>
-        cardCounts.Values.Any(value => value == 3) && cardCounts.Values.Any(value => value == 2);
-    
-    private static bool IsThreeOfAKind(Dictionary<Label, int> cardCounts) =>
-        cardCounts.Values.Any(value => value == 3);
-    
-    private static bool IsTwoPair(Dictionary<Label, int> cardCounts) =>
-        cardCounts.Values.Where(value => value == 2).Count() == 2;
+        CountOfDifferentNonJokerLabels(cardCounts) <= 2;
+
+    private static bool IsThreeOfAKind(Dictionary<Label, int> cardCounts) => HasCardsOfSameKind(cardCounts, 3);
+
+    private static bool IsTwoPair(Dictionary<Label, int> cardCounts) => cardCounts.GetValueOrDefault(Label.Joker, 0) switch
+    {
+        >= 2 => true,
+        1 => CountOfDifferentNonJokerLabels(cardCounts) == 2 || CountOfDifferentNonJokerLabels(cardCounts) == 3,
+        <= 0 => GetNonJokerLabels(cardCounts).Where(label => cardCounts[label] >= 2).Count() == 2,
+    };
 
     private static bool IsOnePair(Dictionary<Label, int> cardCounts) =>
-        cardCounts.Values.Where(value => value == 2).Count() == 1;
+        cardCounts.GetValueOrDefault(Label.Joker, 0) == 2
+        || GetNonJokerLabels(cardCounts).Any(label => cardCounts[label] + cardCounts.GetValueOrDefault(Label.Joker, 0) == 2);
+    
+    private static bool HasCardsOfSameKind(Dictionary<Label, int> cardCounts, int count) =>
+        cardCounts.GetValueOrDefault(Label.Joker, 0) == count
+        || GetNonJokerLabels(cardCounts).Any(label => cardCounts[label] + cardCounts.GetValueOrDefault(Label.Joker, 0) == count);
+
+    private static int CountOfDifferentNonJokerLabels(Dictionary<Label, int> cardCounts) =>
+        GetNonJokerLabels(cardCounts).Where(label => cardCounts[label] >= 1).Count();
+    
+    private static IEnumerable<Label> GetNonJokerLabels(Dictionary<Label, int> cardCounts) =>
+        cardCounts.Keys.Where(label => label != Label.Joker);
 }

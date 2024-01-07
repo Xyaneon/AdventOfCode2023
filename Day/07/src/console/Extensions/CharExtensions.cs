@@ -15,7 +15,7 @@ public static class CharExtensions
         { '8', Label.Eight },
         { '9', Label.Nine },
         { 'T', Label.Ten },
-        { 'J', Label.Jack },
+        { 'J', Label.Joker },
         { 'Q', Label.Queen },
         { 'K', Label.King },
         { 'A', Label.Ace },
