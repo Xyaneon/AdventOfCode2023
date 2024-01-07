@@ -1,17 +1,25 @@
+using System.Collections.Immutable;
 using Calculations;
+using Extensions;
 
 namespace Domain;
 
-public class Hand
+public class Hand : IComparable<Hand>
 {
+    private const int HandSize = 5;
+
     private HandType? _handType;
 
     public Hand(string labels)
     {
-        Labels = labels;
+        if (labels.Length != HandSize)
+        {
+            throw new ArgumentException($"Hand size expected to be {HandSize}, but got {labels.Length}.");
+        }
+        Labels = ParseLabels(labels);
     }
 
-    public string Labels { get; init; }
+    public IReadOnlyList<Label> Labels { get; init; }
 
     public HandType GetHandType()
     {
@@ -20,5 +28,52 @@ public class Hand
         
         _handType = HandTypeDeterminer.DetermineHandType(this);
         return _handType.Value;
+    }
+
+    public bool HasStrongerHandTypeThanOther(Hand otherHand) =>
+        GetHandType() > otherHand.GetHandType();
+
+    public bool HasStrongerFirstCardThanOther(Hand otherHand)
+    {
+        for (int i = 0; i < Labels.Count; i++)
+        {
+            int comparison = Labels[i].CompareTo(otherHand.Labels[i]);
+
+            if (comparison == 0)
+                continue;
+
+            if (comparison > 0)
+                return true;
+        }
+        return false;
+    }
+
+    public override string ToString() => string.Join("", Labels.Select(label => label.ToChar()));
+
+    public int CompareTo(Hand? other)
+    {
+        if (other is null)
+            return 1;
+
+        int handTypeComparison = GetHandType().CompareTo(other.GetHandType());
+
+        return handTypeComparison != 0
+            ? handTypeComparison
+            : CompareLabels(other);
+    }
+
+    private static ImmutableList<Label> ParseLabels(string labels) =>
+        ImmutableList.CreateRange(labels.Select(chr => chr.ToLabel()));
+
+    private int CompareLabels(Hand other)
+    {
+        for (int i = 0; i < HandSize; i++)
+        {
+            int comparison = Labels[i].CompareTo(other.Labels[i]);
+
+            if (comparison != 0)
+                return comparison;
+        }
+        return 0;
     }
 }

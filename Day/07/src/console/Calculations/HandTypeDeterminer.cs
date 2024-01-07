@@ -41,49 +41,49 @@ static class HandTypeDeterminer
         return HandType.HighCard;
     }
 
-    private static Dictionary<char, int> GetCardCounts(string hand)
+    private static Dictionary<Label, int> GetCardCounts(IEnumerable<Label> labels)
     {
         var cardCounts = InitializeEmptyCardCounts();
-        foreach (char label in hand)
+        foreach (var label in labels)
         {
             cardCounts[label] = cardCounts[label] + 1;
         }
         return cardCounts;
     }
 
-    private static Dictionary<char, int> InitializeEmptyCardCounts() =>
+    private static Dictionary<Label, int> InitializeEmptyCardCounts() =>
         new()
         {
-            { '2', 0 },
-            { '3', 0 },
-            { '4', 0 },
-            { '5', 0 },
-            { '6', 0 },
-            { '7', 0 },
-            { '8', 0 },
-            { '9', 0 },
-            { 'T', 0 },
-            { 'J', 0 },
-            { 'Q', 0 },
-            { 'K', 0 },
-            { 'A', 0 },
+            { Label.Two, 0 },
+            { Label.Three, 0 },
+            { Label.Four, 0 },
+            { Label.Five, 0 },
+            { Label.Six, 0 },
+            { Label.Seven, 0 },
+            { Label.Eight, 0 },
+            { Label.Nine, 0 },
+            { Label.Ten, 0 },
+            { Label.Jack, 0 },
+            { Label.Queen, 0 },
+            { Label.King, 0 },
+            { Label.Ace, 0 },
         };
 
-    private static bool IsFiveOfAKind(Dictionary<char, int> cardCounts) =>
+    private static bool IsFiveOfAKind(Dictionary<Label, int> cardCounts) =>
         cardCounts.Values.Any(value => value == 5);
 
-    private static bool IsFourOfAKind(Dictionary<char, int> cardCounts) =>
+    private static bool IsFourOfAKind(Dictionary<Label, int> cardCounts) =>
         cardCounts.Values.Any(value => value == 4);
     
-    private static bool IsFullHouse(Dictionary<char, int> cardCounts) =>
+    private static bool IsFullHouse(Dictionary<Label, int> cardCounts) =>
         cardCounts.Values.Any(value => value == 3) && cardCounts.Values.Any(value => value == 2);
     
-    private static bool IsThreeOfAKind(Dictionary<char, int> cardCounts) =>
+    private static bool IsThreeOfAKind(Dictionary<Label, int> cardCounts) =>
         cardCounts.Values.Any(value => value == 3);
     
-    private static bool IsTwoPair(Dictionary<char, int> cardCounts) =>
+    private static bool IsTwoPair(Dictionary<Label, int> cardCounts) =>
         cardCounts.Values.Where(value => value == 2).Count() == 2;
 
-    private static bool IsOnePair(Dictionary<char, int> cardCounts) =>
+    private static bool IsOnePair(Dictionary<Label, int> cardCounts) =>
         cardCounts.Values.Where(value => value == 2).Count() == 1;
 }

@@ -1,4 +1,6 @@
-﻿using Domain;
+﻿using System.Collections.Immutable;
+
+using Domain;
 
 using Extensions;
 
@@ -21,14 +23,32 @@ catch (Exception ex)
     return 2;
 }
 
-List<PuzzleInputLine> puzzleInputLines = lines.Select(line => line.ParseAsPuzzleInputLine())
-                                              .ToList();
+// List<PuzzleInputLine> puzzleInputLines = lines.Select(line => line.ParseAsPuzzleInputLine())
+//                                               .ToList();
 
-foreach (PuzzleInputLine line in puzzleInputLines)
+// foreach (PuzzleInputLine line in puzzleInputLines)
+// {
+//     Console.WriteLine($"{line.Hand} {line.Bid} {line.DetermineHandType()}");
+// }
+
+Console.WriteLine("---");
+
+ImmutableList<PuzzleInputLine> sortedPuzzleInputLines = lines
+    .Select(line => line.ParseAsPuzzleInputLine())
+    .OrderBy(line => line)
+    .ToImmutableList();
+
+var score = 0;
+for (int i = 0; i < sortedPuzzleInputLines.Count; i++)
 {
-    Console.WriteLine($"{line.Hand.Labels} {line.Bid} {line.DetermineHandType()}");
+    var line = sortedPuzzleInputLines[i];
+    var rank = i + 1;
+    var handScore = line.Bid * rank;
+    score += handScore;
+    Console.WriteLine($"Rank {rank}: {line.Hand} {line.Bid} {line.DetermineHandType()} Score: {line.Bid} * {rank} = {handScore}");
 }
 
-// TODO: Fill in the rest.
+Console.WriteLine("---");
+Console.WriteLine($"Total score: {score}");
 
 return 0;

@@ -1,6 +1,6 @@
 namespace Domain;
 
-public class PuzzleInputLine
+public class PuzzleInputLine : IComparable<PuzzleInputLine>
 {
     public PuzzleInputLine(Hand hand, int bid)
     {
@@ -11,4 +11,7 @@ public class PuzzleInputLine
     public Hand Hand { get; init; }
 
     public int Bid { get; init; }
+
+    public int CompareTo(PuzzleInputLine? other) =>
+        other is null ? 0 : Hand.CompareTo(other.Hand);
 }
