@@ -30,24 +30,6 @@ public class Hand : IComparable<Hand>
         return _handType.Value;
     }
 
-    public bool HasStrongerHandTypeThanOther(Hand otherHand) =>
-        GetHandType() > otherHand.GetHandType();
-
-    public bool HasStrongerFirstCardThanOther(Hand otherHand)
-    {
-        for (int i = 0; i < Labels.Count; i++)
-        {
-            int comparison = Labels[i].CompareTo(otherHand.Labels[i]);
-
-            if (comparison == 0)
-                continue;
-
-            if (comparison > 0)
-                return true;
-        }
-        return false;
-    }
-
     public override string ToString() => string.Join("", Labels.Select(label => label.ToChar()));
 
     public int CompareTo(Hand? other)

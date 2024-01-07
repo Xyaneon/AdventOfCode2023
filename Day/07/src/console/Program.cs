@@ -1,4 +1,5 @@
 ﻿using System.Collections.Immutable;
+using System.Diagnostics;
 
 using Domain;
 
@@ -23,15 +24,7 @@ catch (Exception ex)
     return 2;
 }
 
-// List<PuzzleInputLine> puzzleInputLines = lines.Select(line => line.ParseAsPuzzleInputLine())
-//                                               .ToList();
-
-// foreach (PuzzleInputLine line in puzzleInputLines)
-// {
-//     Console.WriteLine($"{line.Hand} {line.Bid} {line.DetermineHandType()}");
-// }
-
-Console.WriteLine("---");
+var stopwatch = Stopwatch.StartNew();
 
 ImmutableList<PuzzleInputLine> sortedPuzzleInputLines = lines
     .Select(line => line.ParseAsPuzzleInputLine())
@@ -48,7 +41,9 @@ for (int i = 0; i < sortedPuzzleInputLines.Count; i++)
     Console.WriteLine($"Rank {rank}: {line.Hand} {line.Bid} {line.DetermineHandType()} Score: {line.Bid} * {rank} = {handScore}");
 }
 
+stopwatch.Stop();
+
 Console.WriteLine("---");
-Console.WriteLine($"Total score: {score}");
+Console.WriteLine($"Total score: {score} (found in {stopwatch.ElapsedMilliseconds} ms)");
 
 return 0;
